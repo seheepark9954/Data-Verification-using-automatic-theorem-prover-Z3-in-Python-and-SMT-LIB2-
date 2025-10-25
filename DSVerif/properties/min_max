@@ -1,0 +1,19 @@
+(define-fun min () Int -1)
+(define-fun max () Int 1)
+
+(assert
+	(not
+		(exists ((i Int) (j Int))
+			(and
+				(>= i 0)
+				(< i n)
+				(>= j 0)
+				(< j m)
+				(or
+					(< (select (select D i) j) min )
+					(> (select (select D i) j) max )
+				)
+			)
+		)
+	)
+)

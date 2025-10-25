@@ -1,0 +1,8 @@
+(define-fun weight ((i Int)) Real (select(select D i) 2))
+
+(assert
+  (not (exists ((i Int))
+         (and (<= 0 i) (< i m)
+              (<= (weight i) 0.0)))))
+
+              

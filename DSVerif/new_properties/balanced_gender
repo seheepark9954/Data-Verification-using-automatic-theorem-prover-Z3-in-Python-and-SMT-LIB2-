@@ -1,0 +1,16 @@
+(define-fun gender ((i Int)) Real (select (select D i) 3))
+(define-fun is1 ((i Int)) Int (ite (= (gender i) 1.0) 1 0))
+
+(define-fun-rec cnt1_upto ((k Int)) Int
+  (ite (< k 0) 0
+      (+ (is1 k) (cnt1_upto (- k 1)))))
+
+(define-fun cnt1 () Int (cnt1_upto (- m 1)))
+(define-fun cnt2 () Int (- m cnt1))
+
+(define-fun r_m   () Real (to_real m))
+(define-fun r_cnt1 () Real (to_real cnt1))
+(define-fun r_cnt0 () Real (to_real cnt0))
+
+(assert (>= (/ r_cnt1 r_m) 0.4))  
+(assert (>= (/ r_cnt0 r_m) 0.4)) 

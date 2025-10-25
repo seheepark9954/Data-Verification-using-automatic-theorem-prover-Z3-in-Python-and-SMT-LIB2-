@@ -1,0 +1,13 @@
+; expects: m : Int, D : (Array Int (Array Int Real))
+
+; i: param(person), Real: output-datatype, '(select (select D i) 0)' :context(output or return value)
+
+(define-fun height ((i Int)) Real (select (select D i) 0))
+(define-fun leglen ((i Int)) Real (select (select D i) 1))
+
+(assert
+  (forall ((i Int))
+    (=> (and (<= 0 i) (< i m))
+        (> (height i) (leglen i)))))
+
+ 

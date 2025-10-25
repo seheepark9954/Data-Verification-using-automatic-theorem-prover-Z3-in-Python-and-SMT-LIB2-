@@ -1,0 +1,20 @@
+(assert
+	(not
+		(exists ( (i Int) (j Int))
+			(and
+				(>= j 0)
+				(>= i 0)
+				(< j m)
+				(< i m)
+				(not (= i j))
+				(forall ((k Int))
+					(=>
+						(and (>= k 0) (< k n))
+						(= (select (select D i) k) (select (select D j) k))
+					)
+				)
+				(not (= (select O i) (select O j) ))
+			)
+		)
+	)
+)

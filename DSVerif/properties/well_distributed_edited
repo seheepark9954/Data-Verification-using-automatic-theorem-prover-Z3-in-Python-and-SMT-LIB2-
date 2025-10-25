@@ -1,0 +1,37 @@
+; threshold
+(define-fun d () Int 1)
+
+; sum of squared coordinate differences (returns Real)
+
+(define-fun-rec squared-diff-sum ((p1 (Array Int Real)) (p2 (Array Int Real)) (size Int)) Real
+  (ite (< size 0)
+      0.0
+      (+ (* (- (select p1 size) (select p2 size))
+            (- (select p1 size) (select p2 size)))
+         (squared-diff-sum p1 p2 (- size 1)))))
+
+
+; OPTIONAL: name for readability — true L2^2 (squared L2 distance)
+
+(define-fun distance2 ((p1 (Array Int Real)) (p2 (Array Int Real)) (size Int)) Real
+  (squared-diff-sum p1 p2 size))
+
+
+; Use distance^2 > d^2 instead of distance > d
+
+(assert
+  (not
+    (exists ((p (Array Int Real)))
+      (forall ((i Int))
+        (=> (and (>= i 0) (< i m))
+            (> (distance2 p (select D i) (- n 1))
+               (to_real (* d d))
+            )
+        )
+      )
+    )
+  )
+)
+
+
+

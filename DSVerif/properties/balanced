@@ -1,0 +1,31 @@
+; ((\sum_{j=1}^n \begin{cases}1;& \text{if ds[j][m] = L[i]}\\0;&\text{otherwise}\end{cases})\geq \frac{1}{\beta \cdot n})
+
+;ite == if then else. ite <condition> <then-part> <else-part>
+;item == label (target). "how many a certain kind of label are in DB"
+;size == data size(length) until which datapoint  0 to m-1
+
+;l == label L. 0 to l-1
+
+(define-fun-rec sum-if-value ( (A (Array Int Real)) (item Real) (size Int)) Int
+	(ite (< size 0)
+		0
+		(ite (= (select A size) item)
+			(+ 1 (sum-if-value A item (- size 1)))
+			(sum-if-value A item (- size 1))
+		)	
+	)
+)
+
+(define-fun B () Int 2)
+
+(assert
+	(not 
+		(exists ( (i Int) )
+			(and
+				(>= i 0)
+				(< i l)
+				(< (sum-if-value O (select L i) m) (/ m (* l B)) )
+			)
+		)
+	)
+) 
