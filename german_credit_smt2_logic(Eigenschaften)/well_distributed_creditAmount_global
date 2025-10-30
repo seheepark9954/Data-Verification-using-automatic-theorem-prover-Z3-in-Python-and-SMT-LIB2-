@@ -1,0 +1,38 @@
+; global 2. Well-Distributed on Credit Amount (col 4, values 1..5) 
+; it checks the data set is well distributed with minimum 10 percent of each property.
+
+; credit amount accessor: column index 4 (0-based)
+(define-fun ca ((i Int)) Int
+  (select (select D i) 4))
+
+; count how many rows have ca == val, scanning i..m-1
+(define-fun-rec count_ca ((i Int) (val Int)) Int
+  (ite (>= i m)
+       0
+       (+ (ite (= (ca i) val) 1 0)
+          (count_ca (+ i 1) val))))
+
+; totals for each bin 1..5
+(define-fun cnt1 () Int (count_ca 0 1))
+(define-fun cnt2 () Int (count_ca 0 2))
+(define-fun cnt3 () Int (count_ca 0 3))
+(define-fun cnt4 () Int (count_ca 0 4))
+(define-fun cnt5 () Int (count_ca 0 5))
+
+; helper: at-least-10% written without division to avoid floor issues
+(define-fun atLeast10 ( (c Int) ) Bool
+  (>= (* 100 c) (* 10 m)))
+
+; --- Check actual counts (optional) ---
+(check-sat)
+(get-value (cnt1 cnt2 cnt3 cnt4 cnt5))
+
+; --- Enforce "well distributed": each bin >= 10% of all rows ---
+(push)
+(assert (and (atLeast10 cnt1)
+             (atLeast10 cnt2)
+             (atLeast10 cnt3)
+             (atLeast10 cnt4)
+             (atLeast10 cnt5)))
+(check-sat)
+(pop)

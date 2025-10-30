@@ -1,0 +1,10 @@
+; local 1. checking credit duration
+; checking credit duration (0 <= duration < 600 should be SAT)
+; all rows must have valid credit duration
+(assert
+  (forall ((i Int))
+    (=> (and (>= i 0) (< i m))
+        (and (>= (select (select D i) 1) 0)
+             (<  (select (select D i) 1) 600)))))
+(check-sat)
+
